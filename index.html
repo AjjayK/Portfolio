@@ -135,7 +135,6 @@ document.addEventListener('DOMContentLoaded', async function() {
           View projects
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"></path></svg>
         </a>
-        <a class="btn btn-secondary" href="${resumeHref}" target="_blank" rel="noopener noreferrer">Resume</a>
         <a class="btn btn-ghost" href="#contact">Get in touch &rarr;</a>
       </div>
     </div>
@@ -170,9 +169,8 @@ document.addEventListener('DOMContentLoaded', async function() {
         ['<li><a href="#writing">Writing</a></li>', ''],
         ['<li><a href="#about">About</a></li>', ''],
         ['<a class="nav-btn primary" href="#contact">Contact</a>', '<a class="nav-btn" href="#contact">Contact</a>'],
-        ['</button>\n      <a class="nav-btn" href="https://github.com/AjjayK" target="_blank">', `</button>
-      <a class="nav-btn primary" href="${resumeHref}" target="_blank" rel="noopener noreferrer">Resume</a>
-      <a class="nav-btn" href="https://github.com/AjjayK" target="_blank">`],
+        ['<a class="btn btn-secondary" href="https://linkedin.com/in/ajjay-kannan" target="_blank">LinkedIn</a>', `<a class="btn btn-secondary" href="https://linkedin.com/in/ajjay-kannan" target="_blank">LinkedIn</a>
+        <a class="btn btn-secondary" href="${resumeHref}" target="_blank" rel="noopener noreferrer">Resume</a>`],
         ['.hero{padding:96px 0 80px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}', '.hero{padding:72px 0 60px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}'],
         ['section{padding:96px 0;border-bottom:1px solid var(--border)}', 'section{padding:72px 0;border-bottom:1px solid var(--border)}'],
         ['.hero .container{position:relative;z-index:1}', '.hero .container{position:relative;z-index:1}.hero-shell{display:grid;grid-template-columns:minmax(0,1.35fr) 320px;gap:36px;align-items:start}.hero-copy{max-width:720px}.hero-blurb{font-size:16px;line-height:1.65;color:var(--text-3);max-width:640px;margin:-10px 0 24px}.hero-glance{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:24px;align-self:start}.hero-glance h2{font-size:13px;color:var(--text-3);font-weight:500;margin-bottom:18px;font-family:\'JetBrains Mono\',monospace;text-transform:uppercase;letter-spacing:.12em}.hero-glance ul{list-style:none;display:flex;flex-direction:column;gap:12px}.hero-glance li{display:flex;justify-content:space-between;gap:16px;padding-bottom:12px;border-bottom:1px solid var(--border);font-size:14px}.hero-glance li:last-child{border:none;padding-bottom:0}.hero-glance li span{color:var(--text-3)}.hero-glance li strong{color:var(--text);font-weight:600;text-align:right}.hero .trust{grid-column:1 / -1}'],
@@ -394,10 +392,6 @@ document.addEventListener('DOMContentLoaded', async function() {
       html = html
         .replace(/St\. Paul, MN/g, 'United States')
         .replace(/(<strong>Open to AI engineering roles<\/strong>)[^<]*(United States)/, '$1 &middot; $2')
-        .replace(
-          /<a class="btn btn-secondary" href="https:\/\/github\.com\/AjjayK" target="_blank">[\s\S]*?GitHub\s*<\/a>/,
-          `<a class="btn btn-secondary" href="${resumeHref}" target="_blank" rel="noopener noreferrer">Resume</a>`
-        )
         .replace(/<section class="hero" id="top" style="border-bottom:1px solid var\(--border\)">[\s\S]*?<\/section>\n\n<!-- ABOUT -->[\s\S]*?<\/section>\n\n<!-- WHAT I DO -->/, `${mergedHero}\n\n<!-- WHAT I DO -->`)
         .replace(/\n<!-- PRINCIPLES -->[\s\S]*?<\/section>\n\n<!-- JOURNEY -->/, '\n\n<!-- JOURNEY -->')
         .replace(/\n<!-- WRITING -->[\s\S]*?<\/section>\n\n<!-- CONTACT -->/, '\n\n<!-- CONTACT -->')
