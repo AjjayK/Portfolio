@@ -12,6 +12,7 @@
     #__bundler_placeholder { color: #999; font-size: 14px; }
   </style>
   <noscript>
+    
     <style>#__bundler_loading { display: none; }</style>
     <div style="position:fixed;bottom:12px;left:12px;font:13px/1.4 -apple-system,BlinkMacSystemFont,sans-serif;color:#999;background:rgba(255,255,255,0.9);padding:6px 12px;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,0.08);z-index:10000;">
       This page requires JavaScript to display.
@@ -114,6 +115,309 @@ document.addEventListener('DOMContentLoaded', async function() {
     // a null origin, so crossorigin forces a CORS fetch that SRI then rejects.
     // The manifest bytes are ours; SRI protects against CDN compromise, not this.
     template = template.replace(/\s+integrity="[^"]*"/gi, '').replace(/\s+crossorigin="[^"]*"/gi, '');
+
+    function applyRecruiterOptimizations(html) {
+      const resumeHref = 'Resume/ajjaykannan_resume.pdf';
+      const mergedHero = `
+<section class="hero" id="top" style="border-bottom:1px solid var(--border)">
+  <div class="hero-grid-bg"></div>
+  <div class="container hero-shell">
+    <div class="hero-copy">
+      <div class="status-pill" data-reveal="">
+        <span class="dot"></span>
+        <span><strong>Open to Applied AI / Data Scientist roles</strong> &middot; United States</span>
+      </div>
+      <h1 class="hero-title" data-reveal="">Engineer building <span class="accent">practical AI solutions</span> that teams use</h1>
+      <p class="hero-lead" data-reveal="">I build agent tooling, RAG systems, document intelligence workflows, and AI Architectures that solve real problems.</p>
+      <p class="hero-blurb" data-reveal="">I bring domain depth, end-to-end delivery, cross-functional thinking, and a product mindset to building AI systems — from shaping the problem and designing the workflow to shipping tools that teams can adopt, trust, and use in the real world.</p>
+      <div class="hero-ctas" data-reveal="">
+        <a class="btn btn-primary" href="#projects">
+          View projects
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"></path></svg>
+        </a>
+        <a class="btn btn-secondary" href="${resumeHref}" target="_blank" rel="noopener noreferrer">Resume</a>
+        <a class="btn btn-ghost" href="#contact">Get in touch &rarr;</a>
+      </div>
+    </div>
+    <aside class="hero-glance" data-reveal="">
+      <h2>At a glance</h2>
+      <ul>
+        <li><span>Experience</span><strong>3+ years</strong></li>
+        <li><span>Professionally</span><strong>Data Scientist</strong></li>
+        <li><span>Location</span><strong>United States</strong></li>
+        <li><span>Featured work</span><strong>9 projects</strong></li>
+        <li><span>Currently</span><strong>Supply chain planning agent</strong></li>
+        <li><span>Status</span><strong style="color:var(--green)">Open to work</strong></li>
+      </ul>
+    </aside>
+    <div class="trust" data-reveal="">
+      <span class="label">Working on</span>
+      <div class="tags">
+        <span>Agent tooling</span>
+        <span>Agent harness</span>
+        <span>MCP</span>
+        <span>Evals</span>
+        <span>Knowledge graphs</span>
+        <span>RAG</span>
+        <span>Document intelligence</span>
+        <span>On-device AI</span>
+      </div>
+    </div>
+  </div>
+</section>`;
+      const replacements = [
+        ['<li><span>Location</span><strong>St. Paul, MN</strong></li>', '<li><span>Location</span><strong>United States</strong></li>'],
+        ['<li><a href="#writing">Writing</a></li>', ''],
+        ['<li><a href="#about">About</a></li>', ''],
+        ['<a class="nav-btn primary" href="#contact">Contact</a>', '<a class="nav-btn" href="#contact">Contact</a>'],
+        ['</button>\n      <a class="nav-btn" href="https://github.com/AjjayK" target="_blank">', `</button>
+      <a class="nav-btn primary" href="${resumeHref}" target="_blank" rel="noopener noreferrer">Resume</a>
+      <a class="nav-btn" href="https://github.com/AjjayK" target="_blank">`],
+        ['.hero{padding:96px 0 80px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}', '.hero{padding:72px 0 60px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}'],
+        ['section{padding:96px 0;border-bottom:1px solid var(--border)}', 'section{padding:72px 0;border-bottom:1px solid var(--border)}'],
+        ['.hero .container{position:relative;z-index:1}', '.hero .container{position:relative;z-index:1}.hero-shell{display:grid;grid-template-columns:minmax(0,1.35fr) 320px;gap:36px;align-items:start}.hero-copy{max-width:720px}.hero-blurb{font-size:16px;line-height:1.65;color:var(--text-3);max-width:640px;margin:-10px 0 24px}.hero-glance{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:24px;align-self:start}.hero-glance h2{font-size:13px;color:var(--text-3);font-weight:500;margin-bottom:18px;font-family:\'JetBrains Mono\',monospace;text-transform:uppercase;letter-spacing:.12em}.hero-glance ul{list-style:none;display:flex;flex-direction:column;gap:12px}.hero-glance li{display:flex;justify-content:space-between;gap:16px;padding-bottom:12px;border-bottom:1px solid var(--border);font-size:14px}.hero-glance li:last-child{border:none;padding-bottom:0}.hero-glance li span{color:var(--text-3)}.hero-glance li strong{color:var(--text);font-weight:600;text-align:right}.hero .trust{grid-column:1 / -1}'],
+        ['.hero-ctas{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:56px}', '.hero-ctas{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:32px}'],
+        ['.trust{display:flex;align-items:center;gap:28px;flex-wrap:wrap;padding-top:32px;border-top:1px solid var(--border);color:var(--text-3);font-size:12.5px}', '.trust{display:flex;align-items:center;gap:24px;flex-wrap:wrap;padding-top:24px;border-top:1px solid var(--border);color:var(--text-3);font-size:12.5px}'],
+        ['.section-sub{font-size:17px;color:var(--text-3);max-width:620px;line-height:1.55;margin-bottom:56px}', '.section-sub{font-size:17px;color:var(--text-3);max-width:620px;line-height:1.55;margin-bottom:32px}'],
+        ['.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;margin-bottom:56px;flex-wrap:wrap}', '.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:36px;flex-wrap:wrap}'],
+        ['.about-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:48px;align-items:start}', '.about-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:32px;align-items:start}'],
+        ['.contact-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:56px;text-align:center;position:relative;overflow:hidden}', '.contact-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:44px;text-align:center;position:relative;overflow:hidden}'],
+        ['.contact-card .channels{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:800px;margin:0 auto;padding-top:32px;border-top:1px solid var(--border)}', '.contact-card .channels{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:800px;margin:0 auto;padding-top:24px;border-top:1px solid var(--border)}'],
+        ['.hero{padding:72px 0 64px}', '.hero{padding:60px 0 48px}'],
+        ['section{padding:72px 0}', 'section{padding:56px 0}'],
+        ['.contact-card{padding:40px 24px}', '.contact-card{padding:32px 20px}'],
+        ['.about-grid{grid-template-columns:1fr;gap:24px}', '.about-grid{grid-template-columns:1fr;gap:24px}.hero-shell{grid-template-columns:1fr;gap:24px}.hero-copy{max-width:none}.hero-glance{padding:20px}.hero .trust{margin-top:0}'],
+        ['Four surfaces where I do my best work.', 'How I help teams build and ship AI solutions.'],
+        ['I work across the AI product stack — from ingestion and retrieval to user-facing apps and the product decisions that tie them together.', 'I work across the full AI delivery stack — from data and retrieval to user-facing applications, evaluation, and workflow adoption.'],
+        ['Six things I’ve shipped or prototyped. Each one solved a concrete problem and taught me something specific about applied AI.', 'Production AI work and prototypes across agent platforms, RAG, document intelligence, and data pipelines.'],
+        ["Six things I've shipped or prototyped. Each one solved a concrete problem and taught me something specific about applied AI.", 'Production AI work and prototypes across agent platforms, RAG, document intelligence, and data pipelines.'],
+        ['What I reach for day-to-day, grouped by where they sit in an AI product.', 'The technologies I use to design, build, deploy, and improve production Data, ML and AI products'],
+        ['Interested in AI engineering or applied ML roles? Let’s connect.', "Interested in Applied AI and Data Science roles? Let's connect"],
+        ["Interested in AI engineering or applied ML roles? Let's connect.", "Interested in Applied AI and Data Science roles? Let's connect"],
+        ['I’m currently open to full-time AI engineering and product-focused AI roles. Happy to chat about projects, problems you’re working on, or just swap notes.', "I'm currently open to full-time AI Engineering, Data Science and product-focused AI roles. Happy to chat about projects, problems you're working on, or just swap notes."],
+        ["I'm currently open to full-time AI engineering and product-focused AI roles. Happy to chat about projects, problems you're working on, or just swap notes.", "I'm currently open to full-time AI Engineering, Data Science and product-focused AI roles. Happy to chat about projects, problems you're working on, or just swap notes."],
+        ['const D = window.PORTFOLIO_DATA;', `const D = window.PORTFOLIO_DATA;
+  if (D && Array.isArray(D.whatIDo)) {
+    const __whatIDoBodies = {
+      "AI Applications": "Agent platforms, retrieval-augmented chat over domain documents, multimodal workflows, on-device assistants.",
+      "Data & ML Systems": "Vector retrieval, ingestion pipelines, knowledge extraction, streaming architectures, classical ML, deep learning.",
+      "Product Engineering": "Conversational UIs, streaming responses, auth and multi-tenant data flows, background workers, CI/CD and infrastructure-as-code.",
+      "Domain Focus": "Supply chain, Enterprise Analytics, document intelligence, productivity tools."
+    };
+    D.whatIDo = D.whatIDo.map(item => __whatIDoBodies[item.title] ? {...item, body: __whatIDoBodies[item.title]} : item);
+  }
+  if (D) {
+    D.featured = [
+      {
+        key: "sc-agent-platform",
+        name: "Supply-chain planning agent platform",
+        kicker: "Agent platform · Research + build · WIP",
+        year: "2026",
+        summary: "A kernel + sub-agents platform that scaffolds the judgment around demand planning — a central Kernel coordinates memory and routing, while specialist agents capture the rationale behind planner overrides and use that historic memory to surface exceptions back into the workflow.",
+        stack: ["Claude Agent SDK", "Claude Sonnet 4.6", "MCP", "Next.js", "Supabase", "pgvector"],
+        problem: "The real engine of forecast accuracy isn't the statistical model — it's the planner's overrides and the reasoning behind them, most of which disappears into emails and Teams threads. Meanwhile, external supply-chain signals arrive after the response window has closed.",
+        outcome: "An AI platform that runs two autonomous agents in the background. A Decision Memory Agent captures the rationale behind every override at commit time and uses that stored context to surface exceptions worth a planner's attention. A Grey Swan Sentinel tracks global political, economic, environmental, and social signals hourly and pushes structured override recommendations into the workflow."
+      },
+      {
+        key: "filings-research-agent",
+        name: "Financial filings research agent",
+        kicker: "Agent platform · Document intelligence · Live",
+        year: "2026",
+        summary: "A multi-agent research workspace for corporate filings — pulls announcements from the Stock Exchange (BSE) India, runs structured extraction and hybrid retrieval over the PDFs, and lets users interrogate documents through persisted Claude-backed agent threads built on a dedicated agent harness with MCP tools, skills, and hooks.",
+        stack: ["Claude Agent SDK", "MCP", "Next.js 16", "TypeScript", "OpenAI", "Cosmos DB"],
+        problem: "Reading corporate filings well isn't summarization or RAG. Summaries flatten the deltas that matter quarter-over-quarter; chunk-based retrieval misses what was omitted and can't reason across documents. Serious research needs cross-document comparison, claim verification against history, and the ability to follow up — not a single-shot answer.",
+        outcome: "An agentic interface built on the Claude Agent SDK where every conversation thread becomes an isolated research workspace — its own memory, notebook, task board, and staged documents — so agents build on prior work instead of restarting each turn. Dedicated workflows compare filings side-by-side, flag inconsistencies, and verify claims at scale across large PDF corpora through a dedicated agent harness.",
+        liveUrl: "https://preciousjunk-dgardjctdharefdm.germanywestcentral-01.azurewebsites.net/"
+      },
+      {
+        key: "inside-dreamer",
+        name: "Inside Dreamer",
+        kicker: "Writing · Agent platform · Beta tester",
+        year: "2026",
+        summary: "A long-form writeup of what I learned beta-testing Dreamer (the platform is now part of Meta Superintelligence Labs and remains closed) — shipping multiple agents end-to-end on the platform during its beta program.",
+        stack: ["Agent runtime", "Sub-agent VMs", "Software 3.0", "Composability"],
+        learnings: "Beta-testing Dreamer pushed me a layer below the API surface — into how an agent platform actually composes. Per-user kernel processes, sandboxed sub-agent VMs reachable only through that kernel, typed function exports stitching cross-agent integrations at runtime, and persistent memory as a platform primitive. Working through these patterns on a real agent runtime is what now shapes the agent platforms and apps I build today.",
+        liveUrl: "https://github.com/AjjayK/inside-dreamer",
+        liveLabel: "View repo"
+      },
+      {
+        key: "whereikept",
+        name: "WhereIKept",
+        kicker: "On-device LLM · Android · Edge inference",
+        year: "2026",
+        summary: "An Android app that runs lightweight multimodal LLMs entirely on-device — Whisper.cpp for speech-to-text and Gemma 3N for vision-and-language reasoning. Capture a voice note and a photo while putting something away; later, search in natural language for where you stored it.",
+        stack: ["Kotlin", "Jetpack Compose", "Gemma 3N", "LiteRT-LM", "Whisper.cpp", "Room FTS4"],
+        problem: "Mobile inference needs models that fit phone memory and battery budgets but still handle speech, vision, and reasoning together — and respond fast enough to feel native rather than cloud-routed. Most LLM workflows still assume a server.",
+        outcome: "End-to-end on-device pipeline — Whisper.cpp tiny (74 MB) for speech-to-text and Gemma 3N E2B (~3 GB) multimodal LLM running on Google's LiteRT-LM runtime for object-and-location extraction, all local, with Room FTS4 powering natural-language search. HuggingFace OAuth + WorkManager handles gated-model background downloads.",
+        liveUrl: "https://github.com/AjjayK/WhereIKept",
+        liveLabel: "View repo"
+      },
+      {
+        key: "markitdown",
+        name: "MarkItDown PDF Plugin",
+        kicker: "Open source · PyPI · LLM tooling",
+        year: "2025",
+        summary: "A plugin for Microsoft's MarkItDown library that extracts content from PDFs heavy on tables, images, and figures — where text-only parsers fail.",
+        stack: ["Python", "OpenAI", "PyMuPDF4LLM", "PyPI"],
+        problem: "Text-only PDF parsers drop tables, figures, and layout context — which holds crucial information that downstream LLM workflows cannot afford to lose. Page-at-a-time multimodal extraction is slow and degrades at high token counts.",
+        outcome: "Published to PyPI as a drop-in plugin for MarkItDown. Pages processed concurrently with LLM-assisted extraction of text, tables, and figure context emitted as Markdown.",
+        liveUrl: "https://github.com/AjjayK/markitdown-advanced-pdf-llm-plugin",
+        liveLabel: "View repo"
+      },
+    ];
+    D.other = [
+      {
+        key: "kronia",
+        name: "Kronia",
+        kicker: "RAG · Multimodal · Hackathon",
+        year: "2025",
+        summary: "Multimodal LLM chat over EPA pesticide labels with weather context and field-image inputs — handles dosage, target pest ID, PPE, mixture compatibility, and weather-conditional reapplication across ~2,000 registered products.",
+        stack: ["Snowflake Cortex", "Mistral", "Python", "Streamlit", "Weather APIs"],
+        liveUrl: "https://kronia.streamlit.app/",
+        liveLabel: "Open app"
+      },
+      {
+        key: "epa-ingest",
+        name: "EPA Ingestion Pipeline",
+        kicker: "Data pipeline · IaC · CI/CD",
+        year: "2026",
+        summary: "Six-stage RAG ingestion pipeline for EPA pesticide data — API ingest → Snowflake landing → CORTEX.PARSE_DOCUMENT → chunking UDF → Cortex Search Service. Containerized on AWS Fargate via Terraform with daily EventBridge scheduling; feeds the Kronia chat.",
+        stack: ["Snowflake Cortex", "AWS Fargate", "Terraform", "GitHub Actions", "Docker", "Python"],
+        liveUrl: "https://github.com/AjjayK/sf-epa-data-ingestion",
+        liveLabel: "View repo"
+      },
+      {
+        key: "gaia",
+        name: "GAIA Chatbot",
+        kicker: "Agent · LangGraph · Multi-tool",
+        year: "2025",
+        summary: "A LangGraph multi-tool agent with web search (Tavily), Wikipedia, YouTube transcripts, GPT-4, PDF extraction, and Whisper audio — all behind one Streamlit chat.",
+        stack: ["LangGraph", "Streamlit", "GPT-4", "Whisper", "Tavily"],
+        liveUrl: "https://github.com/AjjayK/general-ai-assistant-chatbot",
+        liveLabel: "View repo"
+      },
+      {
+        key: "amex",
+        name: "Amex Credit Default Prediction",
+        kicker: "Tabular ML · Kaggle",
+        year: "2022",
+        summary: "Credit-default prediction on the Amex Kaggle dataset: Plotly/Dash EDA, then Deep Neural Decision Tree, Deep Neural Forest, and LightGBM compared on the Amex metric.",
+        stack: ["LightGBM", "Deep Learning", "TensorFlow", "Plotly", "Dash"],
+        liveUrl: "https://github.com/AjjayK/Amex-Credit-Default-Prediction",
+        liveLabel: "View repo"
+      }
+    ];
+    D.skills = [
+      {
+        group: "LLMs & Agents",
+        items: ["LLMs", "RAG", "Embeddings", "Multimodal AI", "Claude Agent SDK", "MCP", "LangChain", "LangGraph", "LlamaIndex", "Agent harness", "Prompt design", "Evaluation", "Document intelligence", "Edge AI", "LiteRT-LM"]
+      },
+      {
+        group: "ML & Deep Learning",
+        items: ["scikit-learn", "XGBoost", "LightGBM", "Prophet", "PyTorch", "TensorFlow", "LSTM", "Time-series forecasting", "Optimization", "A/B testing"]
+      },
+      {
+        group: "Data & Backend",
+        items: ["Python", "SQL", "R", "Bash", "Snowflake", "dbt", "Confluent", "Postgres", "MongoDB", "Cosmos DB", "Qdrant", "pgvector", "APIs", "ETL/ELT"]
+      },
+      {
+        group: "App / Product",
+        items: ["Streamlit", "Dash", "Next.js", "TypeScript", "Android", "Kotlin", "Jetpack Compose", "Power BI", "Tableau", "UX thinking"]
+      },
+      {
+        group: "Infra / Cloud",
+        items: ["Azure", "AWS", "Docker", "Terraform", "GitHub Actions", "Azure Pipelines", "Cloudflare Workers", "HuggingFace"]
+      },
+      {
+        group: "Domain",
+        items: ["Supply chain", "Enterprise analytics", "Document intelligence", "Edge AI", "Productivity apps"]
+      }
+    ];
+  }`],
+        ['<div><a href="../index.html">← Back to explorations</a></div>', '']
+      ];
+
+      for (const [from, to] of replacements) html = html.replace(from, to);
+
+      const otherRender = `document.getElementById('other-grid').innerHTML = D.other.map(o=>\`
+    <div class="o o-rich" data-reveal>
+      <div class="o-head">
+        <div class="t">\${o.kicker} · \${o.year}</div>
+        \${o.liveUrl ? \`<a class="project-live" href="\${o.liveUrl}" target="_blank" rel="noopener noreferrer">\${o.liveLabel || 'Open app'} &rarr;</a>\` : ''}
+      </div>
+      <h4>\${o.name}</h4>
+      <p>\${o.summary}</p>
+      <div class="stack">\${o.stack.slice(0,6).map(s=>\`<span>\${s}</span>\`).join('')}</div>
+    </div>
+  \`).join('');`;
+
+      const projectsRender = `// PROJECTS — all detailed full-width, no visuals
+  document.getElementById('projects-grid').innerHTML = D.featured.map((p,i)=>{
+    if (i < 5) {
+      return \`
+    <div class="project featured open" data-reveal>
+      <div class="project-body">
+        <div class="kicker">No. \${String(i+1).padStart(2,'0')} · \${p.kicker} · \${p.year}</div>
+        <div class="project-title-row">
+          <h3>\${p.name}</h3>
+          \${p.liveUrl ? \`<a class="project-live" href="\${p.liveUrl}" target="_blank" rel="noopener noreferrer">\${p.liveLabel || 'Open app'} &rarr;</a>\` : ''}
+        </div>
+        <p class="summary">\${p.summary}</p>
+        <div class="stack">\${p.stack.slice(0,6).map(s=>\`<span>\${s}</span>\`).join('')}</div>
+      </div>
+      <div class="project-detail">
+        \${p.learnings ? \`
+        <div class="grid single">
+          <div class="item"><div class="k">What I learned</div><div class="v">\${p.learnings}</div></div>
+        </div>\` : \`
+        <div class="grid">
+          <div class="item"><div class="k">Problem</div><div class="v">\${p.problem}</div></div>
+          <div class="item"><div class="k">Outcome</div><div class="v">\${p.outcome}</div></div>
+        </div>\`}
+      </div>
+    </div>\`;
+    }
+    return \`
+    <div class="project" data-reveal>
+      <div class="project-body">
+        <div class="kicker">\${p.kicker} · \${p.year}</div>
+        <div class="project-title-row">
+          <h3>\${p.name}</h3>
+          \${p.liveUrl ? \`<a class="project-live" href="\${p.liveUrl}" target="_blank" rel="noopener noreferrer">\${p.liveLabel || 'Open app'} &rarr;</a>\` : ''}
+        </div>
+        <p class="summary">\${p.summary}</p>
+        <div class="stack">\${p.stack.slice(0,5).map(s=>\`<span>\${s}</span>\`).join('')}</div>
+      </div>
+    </div>\`;
+  }).join('');`;
+
+      html = html
+        .replace(/St\. Paul, MN/g, 'United States')
+        .replace(/(<strong>Open to AI engineering roles<\/strong>)[^<]*(United States)/, '$1 &middot; $2')
+        .replace(
+          /<a class="btn btn-secondary" href="https:\/\/github\.com\/AjjayK" target="_blank">[\s\S]*?GitHub\s*<\/a>/,
+          `<a class="btn btn-secondary" href="${resumeHref}" target="_blank" rel="noopener noreferrer">Resume</a>`
+        )
+        .replace(/<section class="hero" id="top" style="border-bottom:1px solid var\(--border\)">[\s\S]*?<\/section>\n\n<!-- ABOUT -->[\s\S]*?<\/section>\n\n<!-- WHAT I DO -->/, `${mergedHero}\n\n<!-- WHAT I DO -->`)
+        .replace(/\n<!-- PRINCIPLES -->[\s\S]*?<\/section>\n\n<!-- JOURNEY -->/, '\n\n<!-- JOURNEY -->')
+        .replace(/\n<!-- WRITING -->[\s\S]*?<\/section>\n\n<!-- CONTACT -->/, '\n\n<!-- CONTACT -->')
+        .replace(/\n<!-- JOURNEY -->[\s\S]*?<\/section>\s*<!-- CONTACT -->/, '\n\n<!-- CONTACT -->')
+        .replace(/\n\s*\/\/ PRINCIPLES[\s\S]*?\n\s*\/\/ TIMELINE/, '\n\n  // TIMELINE')
+        .replace(/\n\s*\/\/ WRITING[\s\S]*?\n\s*\/\/ ---- Theme toggle ----/, '\n\n  // ---- Theme toggle ----')
+        .replace(/\n\s*\/\/ TIMELINE[\s\S]*?\n\s*\/\/ ---- Theme toggle ----/, '\n\n  // ---- Theme toggle ----')
+        .replace(/\.projects\{display:grid;grid-template-columns:1fr 1fr;gap:20px\}/, '.projects{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;row-gap:20px}')
+        .replace(/\.project\.featured\{grid-column:span 2\}/, ".project.featured{grid-column:span 6}.project:not(.featured){grid-column:span 3}.project-title-row{display:flex;justify-content:space-between;align-items:center;gap:16px}.project-title-row h3{margin:0}.project-detail .grid.single{grid-template-columns:1fr}.project-live{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);text-decoration:none;border:1.5px solid var(--accent);padding:6px 12px;border-radius:999px;transition:background .2s,color .2s;white-space:nowrap;flex-shrink:0;transform:translate(-12px,-6px)}.project-live:hover{background:var(--accent);color:#fff}.o-rich{gap:12px}.o-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}.o-head .t{flex:1}.o .project-live{transform:none}.o .stack{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}.o .stack span{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.04em;padding:3px 8px;background:var(--bg);border:1px solid var(--border);border-radius:6px;color:var(--text-3)}")
+        .replace(/\.project-detail \.grid\{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding-top:20px;border-top:1px solid var\(--border\)\}/, '.project-detail .grid{display:grid;grid-template-columns:1fr 1fr;gap:20px 32px;padding-top:18px;border-top:1px solid var(--border)}')
+        .replace(/\/\/ PROJECTS — first one is featured \(wide\), rest 2-col[\s\S]*?\}\)\.join\(''\);/, projectsRender)
+        .replace(/document\.getElementById\('other-grid'\)\.innerHTML[\s\S]*?\.join\(''\);/, otherRender)
+        .replace(/<p class="section-sub">Smaller projects that show range — from automation bots to financial ML\.<\/p>\s*/, '')
+        .replace(/<p class="section-sub">The technologies I use to design, build, deploy, and improve production Data, ML and AI products<\/p>\s*/, '')
+        .replace(/target="_blank"(?!\s+rel=)/g, 'target="_blank" rel="noopener noreferrer"');
+
+      return html;
+    }
+
+    template = applyRecruiterOptimizations(template);
 
     const resourceScript = '<script>window.__resources = ' +
       JSON.stringify(resourceMap).split('</' + 'script>').join('<\\/' + 'script>') +

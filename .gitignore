@@ -1,1 +1,10 @@
-*.zip
+# Ignore everything by default
+/*
+
+# Allow portfolio HTML and its linked assets
+!/.gitignore
+!/.nojekyll
+!/index.html
+!/Resume
+/Resume/*
+!/Resume/ajjaykannan_resume.pdf
